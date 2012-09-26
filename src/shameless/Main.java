@@ -46,7 +46,6 @@ import org.lwjgl.opengl.DisplayMode;
 public class Main {
 	
 	public Main(){
-		boolean texLoaded = false;
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(840,480));
@@ -63,16 +62,15 @@ public class Main {
 		glMatrixMode(GL_MODELVIEW);
 		glEnable(GL_TEXTURE_2D);
 		
-		
+		Textures.loadTextures();
 		while(!Display.isCloseRequested()){
-			if(!texLoaded){
-				Textures.loadTextures();
-				texLoaded = true;
-			}
 			glClear(GL_COLOR_BUFFER_BIT);
-			Towers.towers[0] = new Towers(0, 0, 64, 64, 2, 2, Textures.stone);
-			Towers.towers[0].update();
-			Towers.towers[0].draw();
+			
+			guiButton.button[0] = new guiButton(20, 30, 50, 50, "GAME",true, Textures.arrowTower);
+			guiButton.button[1] = new guiButton(100, 100, 50, 50, "GAME",true, Textures.cannonTower);
+			guiButton.button[0].onUpdate("GAME");
+			guiButton.button[1].onUpdate("GAME");
+			onUpdate();
 			
 			Display.update();
 			Display.sync(60);
