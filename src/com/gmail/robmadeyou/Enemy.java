@@ -16,16 +16,18 @@ public abstract class Enemy implements Entity {
 	protected int y;
 	protected int width;
 	protected int height;
-	protected int health;
+	protected int health = 1;
+	protected boolean hasBulletTargeted = false;
 	protected float r , g, b;
 	protected boolean isLiving = true;
 	protected Texture texture;
 	
-	public Enemy(int x, int y, int width, int height) {
+	public Enemy(int x, int y, int width, int height, int health) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.health = health;
     }
 	@Override
 	public void setLocation(int x, int y) {
@@ -90,11 +92,15 @@ public abstract class Enemy implements Entity {
 	public int getHeight() {
 		return height;
 	}
+	public void onUpdate(){
+		
+	}
 
 	@Override
 	public void draw() {
 		if(Textures.enemy1 != null){
 			Textures.enemy1.bind();
+			//Change the texture loaders. Silly stuff
 		}
 		glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);

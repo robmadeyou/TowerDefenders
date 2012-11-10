@@ -22,7 +22,7 @@ public class Textures {
 	public static void loadTextures(){
 
 		try {
-			//Textures for
+			//Textures for in game objects like towers and whatnot.
 			turretArrow1 = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/towers/ArrowTower.png")));
 			
 			
@@ -34,6 +34,10 @@ public class Textures {
 			
 			
 			marker = TextureLoader.getTexture("PING", new FileInputStream(new File("res/marker.png")));
+			
+			//Textures for Buttons and GUI stuff. Int MatyldaCookies = 0; MatyldaCookies++;
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			Display.destroy();

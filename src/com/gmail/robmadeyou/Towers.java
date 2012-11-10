@@ -23,8 +23,8 @@ public abstract class Towers implements Entity {
 	protected int number;
 	protected int enemyToAttack;
 	protected int cooldown = 0;
-	protected int upgrade;
-	protected int upgrades;
+	protected int bulletUpgrade = 1;
+	protected int upgrade = 0;
 	protected String name;
 	protected float r , g, b;
 	protected boolean selected;
@@ -36,7 +36,7 @@ public abstract class Towers implements Entity {
         this.width = width;
         this.height = height;
         this.name = name;
-        upgrades = 1;
+        upgrade = 1;
     }
 	
 	@Override
@@ -158,12 +158,12 @@ public abstract class Towers implements Entity {
 	}
 
 	public int upgrades() {
-		// TODO Auto-generated method stub
-		return upgrades;
+		return upgrade;
 	}
 
 	public void name() {
-		if(name.equals("arrow") && upgrades == 1){
+		//TODO Keep adding the upgrades pls
+		if(name.equals("arrow") && upgrade == 1){
 			texture = Textures.turretArrow1;
 			
 			m1 = x - 60;
@@ -171,7 +171,7 @@ public abstract class Towers implements Entity {
 			m3 = x + width + 60;
 			m4 = y + height + 60;
 			
-		}else if(name.equals("cannon") && upgrades == 1){
+		}else if(name.equals("cannon") && upgrade == 1){
 			texture = Textures.turretCannon1;
 			m1 = x - 30;
 			m2 = y - 30;
@@ -224,12 +224,14 @@ public abstract class Towers implements Entity {
 	}
 	
 	public void fire(Entity other, int toAttack){
-		if(isInMarker(other)){
-			if(cooldown >= 30){
-				enemyToAttack = EnemyList.enemyAttack;
-				System.out.println(enemyToAttack);
-				BulletList.addBullet(new BulletList.bullets(x - (width / 2), y - (height / 2), 10, 10, toAttack, number));
-				cooldown = 0;
+		if(EnemyList.enemy[toAttack] != null){
+			if(isInMarker(other)){
+				if(cooldown >= 1){
+					enemyToAttack = EnemyList.enemyAttack;
+					System.out.println(enemyToAttack);
+					BulletList.addBullet(new BulletList.bullets(x + (width / 2), y + (height / 2), 10, 10, toAttack, number));
+					cooldown = 0;
+				}
 			}
 		}
 

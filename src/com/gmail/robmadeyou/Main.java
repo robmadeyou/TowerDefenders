@@ -3,7 +3,6 @@ package com.gmail.robmadeyou;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
@@ -16,14 +15,7 @@ import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glTexCoord2f;
-import static org.lwjgl.opengl.GL11.glVertex2f;
-import static org.lwjgl.opengl.GL11.glVertex2i;
-import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
@@ -47,14 +39,15 @@ public class Main {
         return delta;
     }
     
-	static int displayX = 640;
-	static int displayY = 480;
+	static int displayX = 1024;
+	static int displayY = 512;
+	
 	public Main(){
 		try {
 			Display.setDisplayMode(new DisplayMode(displayX,displayY));
 			Display.setTitle("");
 			Display.create();
-			Display.setResizable(true);
+			Display.setResizable(false);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
@@ -66,32 +59,27 @@ public class Main {
 		glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
 	    glEnable(GL_BLEND);
 	    glBlendFunc(GL_SRC_ALPHA , GL_ONE_MINUS_SRC_ALPHA);
-
+	    Textures.loadTextures();
 		TowerList.addEntity(new TowerList.Towerse(10, 20, 20, 20, "arrow"));
 		TowerList.addEntity(new TowerList.Towerse(50, 50, 50, 50, "arrow"));
 		TowerList.addEntity(new TowerList.Towerse(100,100,50,50, "cannon"));
 		
-		EnemyList.addEnemy(new EnemyList.Enemies(200, 200, 40, 40));
-		EnemyList.addEnemy(new EnemyList.Enemies(200, 240, 40, 40));
-		Textures.loadTextures();
-		boolean pressed = false;
+		EnemyList.addEnemy(new EnemyList.Enemies(200, 200, 40, 40, 1));
+		EnemyList.addEnemy(new EnemyList.Enemies(200, 240, 40, 40, 1));
+		
+		GuiButtonList.addButton(new GuiButtonList.GuiButtons(200, 200, 300, 300, "MAIN_MENU", "start", Textures.marker));
+
+		int enemyies = 0;
 		while(!Display.isCloseRequested()){
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			int delta = getDelta();
-			
-			
-			while(Keyboard.next()){
-				if(Keyboard.getEventKeyState()){
-					if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-						pressed = true;
-						TowerList.towerList[1].fire(EnemyList.enemy[EnemyList.enemyAttack], delta);
-					}
-				}
+			enemyies++;
+			if(enemyies >= 10){
+				EnemyList.addEnemy(new EnemyList.Enemies(0, 200, 50, 50, 1));
+				enemyies = 0;
 			}
-			if(pressed){
-				
-			}
+
 			onUpdate(delta);
 			
 			Display.update();
@@ -100,15 +88,11 @@ public class Main {
 	}
 	
 	public void onUpdate(int delta){
-		TowerList.renderAll();
-		TowerList.updateAll(delta);
-		EnemyList.renderAll();
-		EnemyList.updateAll();
-		BulletList.draw();
-		BulletList.onUpdate();
+		State.onUpdate(delta);
+		Input.checkMouseInput();
 	}
 	
-	public static void main(String[]args){
+	public static void main(String args[]){
 		new Main();
 	}
 }
