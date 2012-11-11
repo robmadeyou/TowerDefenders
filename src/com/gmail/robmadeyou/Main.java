@@ -26,8 +26,7 @@ import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 
 public class Main {
 	
-    private static long lastFrame;
-
+    private static long lastFrame;//mug
     private static long getTime() {
         return (Sys.getTime() * 1000) / Sys.getTimerResolution();
     }
