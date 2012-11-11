@@ -12,18 +12,24 @@ import org.newdawn.slick.opengl.Texture;
 
 public abstract class GuiButton implements Gui {
 	
-	protected int x, y, h, w;
+	protected int x, y, h, w, number;
+	protected int oX, oY, oH, oW;
 	protected String state, name;
 	protected Texture tex;
 	
-	public GuiButton(int x, int y, int h, int w, String state, String name, Texture tex){
+	public GuiButton(int x, int y, int w, int h, int number, String state, String name, Texture tex){
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
+		this.number = number;
 		this.state = state;
 		this.name = name;
 		this.tex = tex;
+		this.oX = x;
+		this.oY = y;
+		this.oH = h;
+		this.oW = w;
 	}
 	@Override
 	public void setLocation(int x, int y) {
@@ -48,7 +54,7 @@ public abstract class GuiButton implements Gui {
 	public boolean isMouseOver(){
 		int mX = Mouse.getX();
 		int mY = Display.getHeight() - Mouse.getY();
-		if(mX >= x && mX <= x + w && mY >= y && mY <= y + h ){
+		if(mX > x && mX < x + w && mY > y && mY < y + h ){
 			System.out.println("fawef");
 			return true;
 		}
@@ -57,6 +63,27 @@ public abstract class GuiButton implements Gui {
 	public void onUpdate(){
 		isMouseOver();
 	}
+	public void expand(int tX, int tY, int tW, int tH){
+		if(tX != -1 && x != tX){
+			x = tX;
+		}
+		if(tY != -1 && y != tY){
+			y = tX;
+		}
+		if(tH != -1 && h != tH){
+			h = tH;
+		}
+		if(tW != -1 && w != tW){
+			w = tW;
+		}
+	}
+	public void returnToNormal(){
+		x = oX;
+		y = oY;
+		h = oH;
+		w = oW;
+	}
+	
 	public void draw(){
 		
 		if(tex != null){

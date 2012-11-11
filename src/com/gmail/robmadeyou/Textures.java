@@ -19,6 +19,25 @@ public class Textures {
 	public static Texture enemy1;
 
 	public static Texture marker;
+	
+	
+	
+	public static Texture startButton;
+	public static Texture startButtonU;
+	
+	public static Texture creditsButton;
+	public static Texture creditsButtonU;
+	
+	public static Texture levelEditButton;
+	public static Texture levelEditButtonU;
+	
+	public static Texture quitButton;
+	public static Texture quitButtonU;
+	
+	
+	
+	
+	public static Texture backgroundMenu;
 	public static void loadTextures(){
 
 		try {
@@ -30,14 +49,28 @@ public class Textures {
 			turretCannon1 = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/towers/CannonTower.png")));
 			
 			
-			enemy1 = TextureLoader.getTexture("PING", new FileInputStream(new File("res/enemies/enemy.png")));
+			enemy1 = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/enemies/enemy.png")));
 			
 			
-			marker = TextureLoader.getTexture("PING", new FileInputStream(new File("res/marker.png")));
+			marker = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/marker.png")));
 			
 			//Textures for Buttons and GUI stuff. Int MatyldaCookies = 0; MatyldaCookies++;
 			
+			startButton = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/startbutton.png")));
+			startButtonU = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/startbuttonU.png")));
 			
+			creditsButton = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/creditsButton.png")));
+			creditsButtonU = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/creditsButtonU.png")));
+			
+			levelEditButton = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/levelEditButton.png")));
+			levelEditButtonU = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/levelEditButtonU.png")));
+			
+			quitButton = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/quitButton.png")));
+			quitButtonU = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/buttons/quitButtonU.png")));
+			
+			
+			//Textures for Background stuff and stuff y'know?
+			backgroundMenu = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/gui/background/menu.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 			Display.destroy();

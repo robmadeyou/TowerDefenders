@@ -41,6 +41,7 @@ public class Main {
     
 	static int displayX = 1024;
 	static int displayY = 512;
+	static boolean test1 = false;
 	
 	public Main(){
 		try {
@@ -64,10 +65,6 @@ public class Main {
 		TowerList.addEntity(new TowerList.Towerse(50, 50, 50, 50, "arrow"));
 		TowerList.addEntity(new TowerList.Towerse(100,100,50,50, "cannon"));
 		
-		EnemyList.addEnemy(new EnemyList.Enemies(200, 200, 40, 40, 1));
-		EnemyList.addEnemy(new EnemyList.Enemies(200, 240, 40, 40, 1));
-		
-		GuiButtonList.addButton(new GuiButtonList.GuiButtons(200, 200, 300, 300, "MAIN_MENU", "start", Textures.marker));
 
 		int enemyies = 0;
 		while(!Display.isCloseRequested()){
@@ -75,7 +72,7 @@ public class Main {
 			
 			int delta = getDelta();
 			enemyies++;
-			if(enemyies >= 10){
+			if(enemyies >= 1){
 				EnemyList.addEnemy(new EnemyList.Enemies(0, 200, 50, 50, 1));
 				enemyies = 0;
 			}
@@ -89,7 +86,12 @@ public class Main {
 	
 	public void onUpdate(int delta){
 		State.onUpdate(delta);
+		if(test1 == false){
+			State.changeBackground(Textures.backgroundMenu);
+			test1 = true;
+		}
 		Input.checkMouseInput();
+		Input.checkKeyboardInput();
 	}
 	
 	public static void main(String args[]){
