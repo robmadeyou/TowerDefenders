@@ -12,7 +12,7 @@ public class StateMenu {
 			GuiButtonList.addButton(new GuiButtonList.GuiButtons(100, 150, 128, 32, 0, "MAIN_MENU", "start", Textures.startButton));
 			GuiButtonList.addButton(new GuiButtonList.GuiButtons(100, 182, 128 , 32, 1, "MAIN_MENU", "credits", Textures.creditsButton));
 			GuiButtonList.addButton(new GuiButtonList.GuiButtons(100, 214, 128, 32, 2, "MAIN_MENU", "levelEditor", Textures.levelEditButton));
-			GuiButtonList.addButton(new GuiButtonList.GuiButtons(100, 246, 128, 32, 2, "MAIN_MENU", "quit", Textures.quitButton));
+			GuiButtonList.addButton(new GuiButtonList.GuiButtons(100, 246, 128, 32, 3, "MAIN_MENU", "quit", Textures.quitButton));
 			hasIni = true;
 		}
 		for(int i = 0; i < GuiButtonList.maxButtons; i++){

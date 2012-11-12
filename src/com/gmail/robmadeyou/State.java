@@ -47,7 +47,10 @@ public class State {
 			EnemyList.updateAll(delta);
 			BulletList.draw();
 			BulletList.onUpdate(delta);
-			GuiButtonList.drawAll("menu");
+		}else if(state.equals("LEVEL_EDIT")){
+			StateLevelEditor.onUpdate();
+		}else if(state.equals("CREDITS")){
+			StateCredits.onUpdate();
 		}
 	}
 	public static void changeState(String s){
