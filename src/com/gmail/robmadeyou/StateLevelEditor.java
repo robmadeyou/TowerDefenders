@@ -8,6 +8,8 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2i;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -19,8 +21,12 @@ import com.gmail.robmadeyou.World;
 public class StateLevelEditor {
 	
     private static TileGrid grid;
+    private static GuiEditorMenuGrid menuTopGrid;
     private static TileType selection = TileType.STONE;
     private static int selector_x = 0, selector_y = 0;
+    private static int MenuSelector_x = 0;
+    private static boolean isInTopMenu = false;
+    private static int selectedTile = 0;
     
     static boolean hasIni = false;
     static boolean firstClick = false;
@@ -28,20 +34,21 @@ public class StateLevelEditor {
 	public static void onUpdate(){
 		if(!hasIni){
 			grid = new TileGrid();
+			menuTopGrid = new GuiEditorMenuGrid();
 			hasIni = true;
 		}
 		if(firstClick){
-			grid.draw();
 			checkInput();
+			menuTopGrid.draw();
+			grid.draw();
 			drawSelectionBox();
-			System.out.println("heyoyo");
+			checkTopMenu();
+			drawMenuSelectionBox();
 		}
 		firstClick = true;
 	}
     private static void drawSelectionBox() {
-    	
-        
-    	
+
         int x = selector_x * World.BLOCK_SIZE;
         int y = selector_y * World.BLOCK_SIZE;
         int x2 = x + World.BLOCK_SIZE;
@@ -64,25 +71,59 @@ public class StateLevelEditor {
             glColor4f(1f, 1f, 1f, 1f);
         }
     }
-    public static void checkInput(){
-    	
-    	int mousex = Mouse.getX();
-        int mousey = 480 - Mouse.getY() - 1;
-        boolean mouseClicked = Mouse.isButtonDown(0);
-        selector_x = Math.round(mousex / World.BLOCK_SIZE) -1;
-        selector_y = Math.round(mousey / World.BLOCK_SIZE);
-        if(selector_x < 0){
-        	selector_x = 0;
-        }
-        if(selector_y < 0){
-        	selector_y = 0;
-        }
-        if (mouseClicked) {
-            grid.setAt(selector_x, selector_y, selection);
-        }
-        
-    	if(Input.keyPressed == Keyboard.KEY_ESCAPE){
-    		State.changeState(State.prevState);
+    
+    
+    private static void checkTopMenu(){
+
+    	menuTopGrid.setAt(4, TileType.SELECTED_TILE);
+    	menuTopGrid.setAt(5, TileType.DIRT);
+    	menuTopGrid.setAt(6, TileType.GRASS);
+    	menuTopGrid.setAt(7, TileType.STONE);
+    	menuTopGrid.setAt(0, TileType.P1_DIRT);
+    	menuTopGrid.setAt(1, TileType.P1_STONE);
+    	menuTopGrid.setAt(2, TileType.P1_GRASS);
+    	menuTopGrid.setAt(3, TileType.P1_GRASS2);
+    	System.out.println(selectedTile);
+    	if(Input.lmbp && isInTopMenu && menuTopGrid.getType(MenuSelector_x).getType() != TileType.QUICK_TILE_EMPTY){
+    		selection = menuTopGrid.getType(MenuSelector_x).getType();
+    		selectedTile = MenuSelector_x;
+    		
     	}
+    }
+    private static void drawMenuSelectionBox(){
+    	new Tile(TileType.SELECTED_TILE, (selectedTile - 1) * World.BLOCK_SIZE, -32).draw();
+    }
+    private static void checkInput(){
+    	int mouseX = Mouse.getX();
+        int mouseY = 512 - Mouse.getY() - 1;
+        if(mouseX >= 0 && mouseX <= 1024 && mouseY >= 0 && mouseY < 32){
+        	isInTopMenu = true;
+        }else{
+        	isInTopMenu = false;
+        }
+        MenuSelector_x = Math.round(mouseX / World.BLOCK_SIZE);
+        if(mouseX >= 32 && mouseX <= 1024 && mouseY >= 32 && mouseY <= 512){
+        	selector_x = Math.round(mouseX / World.BLOCK_SIZE) - 1;
+        	selector_y = Math.round(mouseY / World.BLOCK_SIZE) - 1;
+        	if(selector_x < 0){
+        		selector_x = 0;
+        	}
+        	if(selector_y < 0){
+        		selector_y = 0;
+        	}
+        	if(Input.lmbd){
+        		grid.setAt(selector_x, selector_y, selection);
+        	}
+        	if(Input.rmbd){
+        		grid.setAt(selector_x, selector_y, TileType.AIR);
+        	}
+        
+        	if(Input.keyPressed == Keyboard.KEY_ESCAPE){
+        		State.changeState(State.prevState);
+        	}
+        	if(Input.keyPressed == Keyboard.KEY_C){
+        		grid.clear();
+        	}
+        }
     }
 }
