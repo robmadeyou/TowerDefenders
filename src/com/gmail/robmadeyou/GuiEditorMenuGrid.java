@@ -15,11 +15,17 @@ public class GuiEditorMenuGrid {
 		for(int x = 0; x < maxButtonsTop; x++){
 			buttonsTop[x] = new GuiEditorMenuButtons(TileType.QUICK_TILE_EMPTY, x * BLOCK_SIZE, 0 * BLOCK_SIZE);
 		}
+		for(int y = 0; y < maxButtonsLeft; y++){
+			buttonsLeft[y] = new GuiEditorMenuButtons(TileType.QUICK_TILE_EMPTY, 0, y * BLOCK_SIZE);
+		}
 	}
 	
 	public void draw(){
 		for(int x = 0; x < maxButtonsTop; x++){
 			buttonsTop[x].draw();
+		}
+		for(int y = 0; y < maxButtonsLeft; y++){
+			buttonsLeft[y].draw();
 		}
 	}
 	public void setAt(int x, TileType t){

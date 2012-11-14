@@ -4,6 +4,9 @@ import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2f;
@@ -25,11 +28,12 @@ public class Tile {
     private Texture texture = null;
     private float x;
     private float y;
+    public int rotation = 0;
 
     public Tile(TileType type, float x, float y) {
         this.type = type;
-        this.x = x;
-        this.y = y;
+        this.x = x + 48;
+        this.y = y + 48;
         try {
             this.texture = TextureLoader.getTexture("PNG", new FileInputStream(new File(type.location)));
         } catch (FileNotFoundException e) {
@@ -42,22 +46,36 @@ public class Tile {
     public void bind() {
         texture.bind();
     }
+    public void setRotaition(int rotation){
+    	this.rotation = rotation;
+    }
 
     public void draw() {
         texture.bind();
+        
+        
+        
+		
         glLoadIdentity();
-        glTranslatef(x, y, 0);
+        glPushMatrix();
+        
+        glTranslatef(x , y, 0);
+        glRotatef(rotation, 0f, 0f, 1f);
+        glTranslatef(-x - 16, -y - 16, 0);
+        glTranslatef(x , y, 0);
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
-        glVertex2f(World.BLOCK_SIZE, World.BLOCK_SIZE);
+        glVertex2f(0, 0);
         glTexCoord2f(1, 0);
-        glVertex2f(World.BLOCK_SIZE + World.BLOCK_SIZE, World.BLOCK_SIZE);
+        glVertex2f(World.BLOCK_SIZE, 0);
         glTexCoord2f(1, 1);
-        glVertex2f(World.BLOCK_SIZE + World.BLOCK_SIZE, World.BLOCK_SIZE + World.BLOCK_SIZE);
+        glVertex2f(World.BLOCK_SIZE, World.BLOCK_SIZE);
         glTexCoord2f(0, 1);
-        glVertex2f(World.BLOCK_SIZE, World.BLOCK_SIZE + World.BLOCK_SIZE);
+        glVertex2f(0,  World.BLOCK_SIZE);
         glEnd();
+        glPopMatrix();
         glLoadIdentity();
+        
     }
 
     public TileType getType() {

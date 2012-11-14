@@ -21,12 +21,13 @@ import com.gmail.robmadeyou.World;
 public class StateLevelEditor {
 	
     private static TileGrid grid;
-    private static GuiEditorMenuGrid menuTopGrid;
+    private static GuiEditorMenuGrid menuGrids;
     private static TileType selection = TileType.STONE;
     private static int selector_x = 0, selector_y = 0;
     private static int MenuSelector_x = 0;
     private static boolean isInTopMenu = false;
     private static int selectedTile = 0;
+    private static int selectedTexPack = 0;
     
     static boolean hasIni = false;
     static boolean firstClick = false;
@@ -34,12 +35,12 @@ public class StateLevelEditor {
 	public static void onUpdate(){
 		if(!hasIni){
 			grid = new TileGrid();
-			menuTopGrid = new GuiEditorMenuGrid();
+			menuGrids = new GuiEditorMenuGrid();
 			hasIni = true;
 		}
 		if(firstClick){
 			checkInput();
-			menuTopGrid.draw();
+			menuGrids.draw();
 			grid.draw();
 			drawSelectionBox();
 			checkTopMenu();
@@ -48,7 +49,6 @@ public class StateLevelEditor {
 		firstClick = true;
 	}
     private static void drawSelectionBox() {
-
         int x = selector_x * World.BLOCK_SIZE;
         int y = selector_y * World.BLOCK_SIZE;
         int x2 = x + World.BLOCK_SIZE;
@@ -74,18 +74,20 @@ public class StateLevelEditor {
     
     
     private static void checkTopMenu(){
-
-    	menuTopGrid.setAt(4, TileType.SELECTED_TILE);
-    	menuTopGrid.setAt(5, TileType.DIRT);
-    	menuTopGrid.setAt(6, TileType.GRASS);
-    	menuTopGrid.setAt(7, TileType.STONE);
-    	menuTopGrid.setAt(0, TileType.P1_DIRT);
-    	menuTopGrid.setAt(1, TileType.P1_STONE);
-    	menuTopGrid.setAt(2, TileType.P1_GRASS);
-    	menuTopGrid.setAt(3, TileType.P1_GRASS2);
-    	System.out.println(selectedTile);
-    	if(Input.lmbp && isInTopMenu && menuTopGrid.getType(MenuSelector_x).getType() != TileType.QUICK_TILE_EMPTY){
-    		selection = menuTopGrid.getType(MenuSelector_x).getType();
+    	if(selectedTexPack == 0){
+    		menuGrids.setAt(4, TileType.SELECTED_TILE);
+    		menuGrids.setAt(5, TileType.DIRT);
+    		menuGrids.setAt(6, TileType.GRASS);
+    		menuGrids.setAt(7, TileType.STONE);
+    		menuGrids.setAt(0, TileType.P1_DIRT);
+    		menuGrids.setAt(1, TileType.P1_STONE);
+    		menuGrids.setAt(2, TileType.P1_GRASS);
+    		menuGrids.setAt(3, TileType.P1_GRASS2);
+    	}else if(selectedTexPack == 1){
+    		menuGrids.setAt(7, TileType.AIR);
+    	}
+    	if(Input.lmbp && isInTopMenu && menuGrids.getType(MenuSelector_x).getType() != TileType.QUICK_TILE_EMPTY){
+    		selection = menuGrids.getType(MenuSelector_x).getType();
     		selectedTile = MenuSelector_x;
     		
     	}
@@ -117,12 +119,20 @@ public class StateLevelEditor {
         	if(Input.rmbd){
         		grid.setAt(selector_x, selector_y, TileType.AIR);
         	}
-        
+        	if(Input.keyPressed == Keyboard.KEY_0){
+        		selectedTexPack = 0;
+        	}else if(Input.keyPressed == Keyboard.KEY_1){
+        		selectedTexPack = 1;
+        	}
         	if(Input.keyPressed == Keyboard.KEY_ESCAPE){
         		State.changeState(State.prevState);
         	}
         	if(Input.keyPressed == Keyboard.KEY_C){
         		grid.clear();
+        	}
+        	if(Input.keyPressed == Keyboard.KEY_R){
+        		grid.setRotation(selector_x, selector_y, 90);
+        		System.out.println("adw");
         	}
         }
     }
