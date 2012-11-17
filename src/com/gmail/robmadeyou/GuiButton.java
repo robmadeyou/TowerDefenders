@@ -55,7 +55,6 @@ public abstract class GuiButton implements Gui {
 		int mX = Mouse.getX();
 		int mY = Display.getHeight() - Mouse.getY();
 		if(mX > x && mX < x + w && mY > y && mY < y + h ){
-			System.out.println("fawef");
 			return true;
 		}
 		return false;

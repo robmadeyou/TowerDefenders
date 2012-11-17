@@ -8,8 +8,6 @@ import static org.lwjgl.opengl.GL11.glColor4f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2i;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -21,11 +19,15 @@ import com.gmail.robmadeyou.World;
 public class StateLevelEditor {
 	
     private static TileGrid grid;
+    private static TileGrid pathsGrid;
     private static GuiEditorMenuGrid menuGrids;
     private static TileType selection = TileType.STONE;
     private static int selector_x = 0, selector_y = 0;
     private static int MenuSelector_x = 0;
+    private static int MenuSelector_y = 0;
+    private static boolean isEditingPaths = false;
     private static boolean isInTopMenu = false;
+    private static boolean isInLeftMenu = false;
     private static int selectedTile = 0;
     private static int selectedTexPack = 0;
     
@@ -41,10 +43,16 @@ public class StateLevelEditor {
 		if(firstClick){
 			checkInput();
 			menuGrids.draw();
-			grid.draw();
+			grid.draw(0);
+			if(isEditingPaths){
+				grid.draw(1);
+			}
 			drawSelectionBox();
 			checkTopMenu();
+			checkLeftMenu();
 			drawMenuSelectionBox();
+			drawLeftMenuSelectionBox();
+			System.out.println(selectedTexPack);
 		}
 		firstClick = true;
 	}
@@ -53,7 +61,7 @@ public class StateLevelEditor {
         int y = selector_y * World.BLOCK_SIZE;
         int x2 = x + World.BLOCK_SIZE;
         int y2 = y + World.BLOCK_SIZE;
-        if (grid.getAt(selector_x, selector_y).getType() != TileType.AIR
+        if (grid.getAt(selector_x, selector_y, 2).getType() != TileType.AIR
                 || selection == TileType.AIR) {
             glBindTexture(GL_TEXTURE_2D, 0);
             glColor4f(1f, 1f, 1f, 0.5f);
@@ -75,16 +83,16 @@ public class StateLevelEditor {
     
     private static void checkTopMenu(){
     	if(selectedTexPack == 0){
-    		menuGrids.setAt(4, TileType.SELECTED_TILE);
-    		menuGrids.setAt(5, TileType.DIRT);
-    		menuGrids.setAt(6, TileType.GRASS);
-    		menuGrids.setAt(7, TileType.STONE);
-    		menuGrids.setAt(0, TileType.P1_DIRT);
-    		menuGrids.setAt(1, TileType.P1_STONE);
-    		menuGrids.setAt(2, TileType.P1_GRASS);
-    		menuGrids.setAt(3, TileType.P1_GRASS2);
+    		menuGrids.setAt(4, TileType.SELECTED_TILE, "x");
+    		menuGrids.setAt(5, TileType.DIRT, "x");
+    		menuGrids.setAt(6, TileType.GRASS, "x");
+    		menuGrids.setAt(7, TileType.STONE, "x");
+    		menuGrids.setAt(0, TileType.P1_DIRT, "x");
+    		menuGrids.setAt(1, TileType.P1_STONE, "x");
+    		menuGrids.setAt(2, TileType.P1_GRASS, "x");
+    		menuGrids.setAt(3, TileType.P1_GRASS2, "x");
     	}else if(selectedTexPack == 1){
-    		menuGrids.setAt(7, TileType.AIR);
+    		menuGrids.setAt(7, TileType.AIR, "x");
     	}
     	if(Input.lmbp && isInTopMenu && menuGrids.getType(MenuSelector_x).getType() != TileType.QUICK_TILE_EMPTY){
     		selection = menuGrids.getType(MenuSelector_x).getType();
@@ -95,6 +103,19 @@ public class StateLevelEditor {
     private static void drawMenuSelectionBox(){
     	new Tile(TileType.SELECTED_TILE, (selectedTile - 1) * World.BLOCK_SIZE, -32).draw();
     }
+    private static void checkLeftMenu(){
+    	menuGrids.setAt(1, TileType.DIRT, "y");
+    	if(Input.lmbp && isInLeftMenu && MenuSelector_y - 1 < 7){
+    		selectedTexPack = MenuSelector_y - 1;
+    		
+    	}
+    	if(Input.lmbp && isInLeftMenu &&  MenuSelector_y - 1 >= 7){
+    		
+    	}
+    }
+    private static void drawLeftMenuSelectionBox(){
+    	new Tile(TileType.SELECTED_TILE_LEFT, -32, (selectedTexPack) * World.BLOCK_SIZE).draw();
+    }
     private static void checkInput(){
     	int mouseX = Mouse.getX();
         int mouseY = 512 - Mouse.getY() - 1;
@@ -103,7 +124,13 @@ public class StateLevelEditor {
         }else{
         	isInTopMenu = false;
         }
+        if(mouseX >= 0 && mouseX < 32 && mouseY >= 32 && mouseY <= 512){
+        	isInLeftMenu = true;
+        }else{
+        	isInLeftMenu = false;
+        }
         MenuSelector_x = Math.round(mouseX / World.BLOCK_SIZE);
+        MenuSelector_y = Math.round(mouseY / World.BLOCK_SIZE);
         if(mouseX >= 32 && mouseX <= 1024 && mouseY >= 32 && mouseY <= 512){
         	selector_x = Math.round(mouseX / World.BLOCK_SIZE) - 1;
         	selector_y = Math.round(mouseY / World.BLOCK_SIZE) - 1;
@@ -114,10 +141,20 @@ public class StateLevelEditor {
         		selector_y = 0;
         	}
         	if(Input.lmbd){
-        		grid.setAt(selector_x, selector_y, selection);
+        		if(!isEditingPaths){
+        			grid.setAt(selector_x, selector_y, selection, 0);
+        		}
+        		if(isEditingPaths){
+        			grid.setAt(selector_x, selector_y, selection, 1);
+        		}
         	}
         	if(Input.rmbd){
-        		grid.setAt(selector_x, selector_y, TileType.AIR);
+        		if(!isEditingPaths){
+        			grid.setAt(selector_x, selector_y, TileType.AIR, 0);
+        		}
+        		if(isEditingPaths){
+        			grid.setAt(selector_x, selector_y, TileType.PATHFINDING_EMPTY, 1);
+        		}
         	}
         	if(Input.keyPressed == Keyboard.KEY_0){
         		selectedTexPack = 0;
@@ -128,11 +165,22 @@ public class StateLevelEditor {
         		State.changeState(State.prevState);
         	}
         	if(Input.keyPressed == Keyboard.KEY_C){
-        		grid.clear();
+        		if(!isEditingPaths){
+        			grid.clear(0);
+        		}else{
+        			grid.clear(1);
+        		}
+        		
         	}
         	if(Input.keyPressed == Keyboard.KEY_R){
-        		grid.setRotation(selector_x, selector_y, 90);
-        		System.out.println("adw");
+        		grid.addRotation(selector_x, selector_y, 90);
+        	}
+        	if(Input.keyPressed == Keyboard.KEY_P){
+        		if(isEditingPaths == true){
+        			isEditingPaths = false;
+        		}else{
+        			isEditingPaths = true;
+        		}
         	}
         }
     }

@@ -5,9 +5,9 @@ import static com.gmail.robmadeyou.World.*;
 
 public class GuiEditorMenuGrid {
 	private int maxButtonsTop = 32;
-	private int maxButtonsLeft = 16;
+	private static int maxButtonsLeft = 16;
 	private GuiEditorMenuButtons[] buttonsTop = new GuiEditorMenuButtons[maxButtonsTop];
-	private GuiEditorMenuButtons[] buttonsLeft = new GuiEditorMenuButtons[maxButtonsLeft];
+	public static GuiEditorMenuButtons[] buttonsLeft = new GuiEditorMenuButtons[maxButtonsLeft];
 	
 	
 	
@@ -16,7 +16,7 @@ public class GuiEditorMenuGrid {
 			buttonsTop[x] = new GuiEditorMenuButtons(TileType.QUICK_TILE_EMPTY, x * BLOCK_SIZE, 0 * BLOCK_SIZE);
 		}
 		for(int y = 0; y < maxButtonsLeft; y++){
-			buttonsLeft[y] = new GuiEditorMenuButtons(TileType.QUICK_TILE_EMPTY, 0, y * BLOCK_SIZE);
+			buttonsLeft[y] = new GuiEditorMenuButtons(TileType.QUICK_TILE_EMPTY, 0, y * BLOCK_SIZE + 32);
 		}
 	}
 	
@@ -28,8 +28,12 @@ public class GuiEditorMenuGrid {
 			buttonsLeft[y].draw();
 		}
 	}
-	public void setAt(int x, TileType t){
-		buttonsTop[x].setType(t);
+	public void setAt(int x, TileType t, String xOrY){
+		if(xOrY.toLowerCase().equals("x")){
+			buttonsTop[x].setType(t);
+		}else{
+			buttonsLeft[x].setType(t);
+		}
 	}
 	public GuiEditorMenuButtons getType(int x){
 		return buttonsTop[x];

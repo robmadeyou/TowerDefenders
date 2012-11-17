@@ -11,15 +11,18 @@ import org.newdawn.slick.opengl.Texture;
 public abstract class Bullet implements Entity{
 	
 	protected int x, y, w, h, enemyNum, toXc, toYc, tOO, ldX, ldY;
-	protected boolean hasTarget = true;
+	protected double speed;
+	protected int target;
+	protected boolean hasTarget = false;
 	protected boolean isActive = true;
 	
-	public Bullet(int x, int y, int w, int h, int enemyNum, int tOO){
+	public Bullet(int x, int y, int w, int h, int enemyNum,double speed, int tOO){
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
 		this.enemyNum = enemyNum;
+		this.speed = speed;
 		this.tOO = tOO;
 		
 	}
@@ -106,10 +109,10 @@ public abstract class Bullet implements Entity{
 		glEnd();
 	}
 	
-	public void shoot(Entity e, int speed){
-		if(isActive){
+	public void shoot(Entity e, double speed){
+		if(hasTarget){
 			if(e != null){
-			double s = speed * 0.6;
+			double s = speed * this.speed;
 			double toX = 0;
 			double toY = 0;
 			toX = x -(e.getX() + (e.getWidth() / 2));
@@ -125,6 +128,13 @@ public abstract class Bullet implements Entity{
 			x -= dX;
 			y -= dY;
 			}
+		}else{
+			x -= ldX;
+			y -= ldY;
 		}
+	}
+	public void moveAfterShoot(int toX, int toY, double speed){
+		x -= ldX;
+		y -= ldY;
 	}
 }

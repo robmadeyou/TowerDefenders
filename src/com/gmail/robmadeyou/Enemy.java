@@ -17,10 +17,24 @@ public abstract class Enemy implements Entity {
 	protected int width;
 	protected int height;
 	protected int health = 1;
+	protected int currentFrame = 0;
+	protected int maxFrame = 3;
+	protected int number = 0;
+	/*
+	 * Direction in wich the enemy is going on. 0 = default but
+	 * 
+	 * 0 = North
+	 * 1 = East
+	 * 2 = South
+	 * 4 = West
+	 * 
+	 */
+	protected int direction = 0;
 	protected boolean hasBulletTargeted = false;
 	protected float r , g, b;
 	protected boolean isLiving = true;
-	protected Texture texture;
+	protected Texture texture = Textures.enemy1;
+	
 	
 	public Enemy(int x, int y, int width, int height, int health) {
         this.x = x;
@@ -93,13 +107,26 @@ public abstract class Enemy implements Entity {
 		return height;
 	}
 	public void onUpdate(){
-		
+		animate();
+	}
+	public void animate(){
+		if(currentFrame == 0){
+			this.texture = Textures.enemy1;
+		}else if(currentFrame == 5){
+			this.texture = Textures.enemy3;
+		}else if(currentFrame == 10){
+			this.texture = Textures.enemy4;
+		}
+		currentFrame++;
+		if(currentFrame == maxFrame * 5){
+			currentFrame = 0;
+		}
 	}
 
 	@Override
 	public void draw() {
-		if(Textures.enemy1 != null){
-			Textures.enemy1.bind();
+		if(texture != null){
+			texture.bind();
 			//Change the texture loaders. Silly stuff
 		}
 		glBegin(GL_QUADS);

@@ -1,6 +1,5 @@
 package com.gmail.robmadeyou;
 
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 public class State {
@@ -41,11 +40,9 @@ public class State {
 		if(state.equals("MAIN_MENU")){
 			StateMenu.onUpdate();
 		}else if(state.equals("GAME")){
-			TowerList.renderAll();
 			TowerList.updateAll(delta);
 			EnemyList.renderAll();
 			EnemyList.updateAll(delta);
-			BulletList.draw();
 			BulletList.onUpdate(delta);
 		}else if(state.equals("LEVEL_EDIT")){
 			StateLevelEditor.onUpdate();

@@ -17,6 +17,10 @@ public class Textures {
 	public static Texture turretCannon1;
 	
 	public static Texture enemy1;
+	public static Texture enemy2;
+	public static Texture enemy3;
+	public static Texture enemy4;
+	
 
 	public static Texture marker;
 	
@@ -50,6 +54,9 @@ public class Textures {
 			
 			
 			enemy1 = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/enemies/enemy.png")));
+			enemy2 = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/enemies/enemy2.png")));
+			enemy3 = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/enemies/enemy3.png")));
+			enemy4 = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/enemies/enemy4.png")));
 			
 			
 			marker = TextureLoader.getTexture("PNG", new FileInputStream(new File("res/marker.png")));

@@ -1,6 +1,5 @@
 package com.gmail.robmadeyou;
 
-import org.lwjgl.opengl.Display;
 
 public class BulletList {
 	
@@ -10,8 +9,8 @@ public class BulletList {
 	
 	public static class bullets extends Bullet{
 
-		public bullets(int x, int y, int w, int h , int enemyNum, int tOO) {
-			super(x, y, w, h, enemyNum, tOO);
+		public bullets(int x, int y, int w, int h , int enemyNum, double speed, int tOO) {
+			super(x, y, w, h, enemyNum,speed, tOO);
 		}
 
 		@Override
@@ -30,43 +29,45 @@ public class BulletList {
 			}
 		}
 	}
-	public static void draw(){
-		for(int i = 0; i < maxBullets; i++){
-			if(bullet[i] != null){
-				bullet[i].draw();
-			}
-		}
+	public static void draw(int i){
+		bullet[i].draw();
 	}
 	public static void onUpdate(int delta){
 		for(int i = 0; i < maxBullets; i++){
 			if(bullet[i] != null){
-				//TODO Fix the bullets... so they actually move out after they have been shot rather than get stuck and keep moving forward and back
-				Enemy e = EnemyList.enemy[TowerList.towerList[bullet[i].tOO].enemyToAttack];
-				Bullet b = bullet[i];
-				if(e != null){
-					if(!e.hasBulletTargeted){
-				if(bullet[i].x != bullet[i].toXc && bullet[i].y != bullet[i].toYc && b.hasTarget){
-					b.hasTarget = true;
-					bullet[i].shoot(EnemyList.enemy[TowerList.towerList[bullet[i].tOO].enemyToAttack], (int) (delta * 0.5));
-				}
-				}
-				}
-				if(e != null){
-					if(e.x <=  b.x + (b.w / 2) && e.x + e.width >= b.x + (b.w / 2) && e.y <= b.y + (b.h / 2) && e.y + e.height >= b.y + (b.h / 2)){
-						e.health -= TowerList.towerList[bullet[i].tOO].bulletUpgrade;
-						bullet[i] = null;
-						}
-				}
-				if(b.hasTarget){
-					int dX = b.ldX;
-					int dY = b.ldY;
-					b.x -= dX;
-					b.y -= dY;
+				draw(i);
+				moveToTarget(i, delta);
 			}
-				if(b.x < 0 || b.x > Display.getWidth() || b.y > Display.getHeight() || b.y < 0){
-					b = null;
-				}
-			}
+		}
+	}
+	public static void moveToTarget(int i, int speed){
+		
+		if(bullet[i] != null && EnemyList.enemy[BulletList.bullet[i].enemyNum] != null){
+		bullet[i].hasTarget = true;
+		int x = bullet[i].x;
+		int y = bullet[i].y;
+		int w = bullet[i].w;
+		int h = bullet[i].h;
+		int toX = bullet[i].toXc;
+		int toY = bullet[i].toYc;
+		
+		int eX = EnemyList.enemy[BulletList.bullet[i].enemyNum].x;
+		int eY = EnemyList.enemy[BulletList.bullet[i].enemyNum].y;
+		int eW = EnemyList.enemy[BulletList.bullet[i].enemyNum].width;
+		int eH = EnemyList.enemy[BulletList.bullet[i].enemyNum].height;
+		boolean one = eX >= x && eX <= x + w && eY >= y && eY <= y + h;
+		boolean two = x >= eX && x <= eX + eW && y >= eY && y <= eY + eH;
+		if(x != toX && y != toY){
+			bullet[i].shoot(EnemyList.enemy[BulletList.bullet[i].enemyNum], speed);
+		}
+		if(one || two){
+			EnemyList.enemy[BulletList.bullet[i].enemyNum].health --;
+			bullet[i] = null;
+		}
+		}
+		if(bullet[i] != null){
+			bullet[i].hasTarget = false;
+			bullet[i].moveAfterShoot(bullet[i].ldX, bullet[i].ldY, speed);
 		}
 	}
 }

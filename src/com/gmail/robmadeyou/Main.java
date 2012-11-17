@@ -1,8 +1,8 @@
 package com.gmail.robmadeyou;
 
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
@@ -60,22 +60,25 @@ public class Main {
 	    glEnable(GL_BLEND);
 	    glBlendFunc(GL_SRC_ALPHA , GL_ONE_MINUS_SRC_ALPHA);
 	    Textures.loadTextures();
-		TowerList.addEntity(new TowerList.Towerse(10, 20, 20, 20, "arrow"));
-		TowerList.addEntity(new TowerList.Towerse(50, 50, 50, 50, "arrow"));
-		TowerList.addEntity(new TowerList.Towerse(100,100,50,50, "cannon"));
+		TowerList.addEntity(new TowerList.Towerse(10, 20, 20, 20, 70, "arrow"));
+		TowerList.addEntity(new TowerList.Towerse(50, 50, 50, 50, 50, "arrow"));
+		TowerList.addEntity(new TowerList.Towerse(100,100,50,50, 50, "cannon"));
 		
-
+		EnemyList.addEnemy(new EnemyList.Enemies(0, 200, 50, 50, 1));
 		int enemyies = 0;
 		while(!Display.isCloseRequested()){
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			int delta = getDelta();
 			enemyies++;
+			
 			if(enemyies >= 1){
 				EnemyList.addEnemy(new EnemyList.Enemies(0, 200, 50, 50, 1));
+				EnemyList.addEnemy(new EnemyList.Enemies(0, 400, 50, 50, 1));
 				enemyies = 0;
+				
 			}
-
+			
 			onUpdate(delta);
 			
 			Display.update();

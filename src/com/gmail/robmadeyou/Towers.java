@@ -22,20 +22,24 @@ public abstract class Towers implements Entity {
 	protected int height;
 	protected int number;
 	protected int enemyToAttack;
-	protected int cooldown = 0;
+	protected int cooldownCurrent = 0;
+	protected int cooldown = 50;
 	protected int bulletUpgrade = 1;
 	protected int upgrade = 0;
+	protected int radius = 60;
+	protected double bulletSpeed = 0.5;
 	protected String name;
 	protected float r , g, b;
 	protected boolean selected;
 	protected Texture texture;
 	
-	public Towers(int x, int y, int width, int height, String name) {
+	public Towers(int x, int y, int width, int height,int radius, String name) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.name = name;
+        this.radius = radius;
         upgrade = 1;
     }
 	
@@ -191,8 +195,7 @@ public abstract class Towers implements Entity {
 			x += Mouse.getDX();
 			y += -Mouse.getDY();
 		}
-		EnemyList.attackEnemy(mX, mY, mW, mH);
-		fire(EnemyList.enemy[EnemyList.enemyAttack], EnemyList.enemyAttack);
+		fire();
 	}
 	public void Render(){
 		if(texture != null){
@@ -223,26 +226,25 @@ public abstract class Towers implements Entity {
 		}
 	}
 	
-	public void fire(Entity other, int toAttack){
-		if(EnemyList.enemy[toAttack] != null){
-			if(isInMarker(other)){
-				if(cooldown >= 1){
-					enemyToAttack = EnemyList.enemyAttack;
-					System.out.println(enemyToAttack);
-					BulletList.addBullet(new BulletList.bullets(x + (width / 2), y + (height / 2), 10, 10, toAttack, number));
-					cooldown = 0;
+	public void fire(){
+		cooldownCurrent++;
+		for(int i = 0; i < EnemyList.enemyNum; i++){
+			if(EnemyList.enemy[i] != null){
+			int eX = EnemyList.enemy[i].x;
+			int eY = EnemyList.enemy[i].y;
+			int eW = EnemyList.enemy[i].width;
+			int eH = EnemyList.enemy[i].height;
+			boolean one = eX >= mX && eX <= mX + mW && eY >= mY && eY <= mY + mH;
+			boolean two = mX >= eX && mX <= eX + eW && mY >= eY && mY <= eY + eH;
+			if(one || two){
+				if(cooldownCurrent >= cooldown){
+					cooldownCurrent = 0;
+					BulletList.addBullet(new BulletList.bullets(x + (width / 2), y + (height / 2),  20, 20, EnemyList.enemy[i].number, 0.5, 3));
+					break;
 				}
 			}
+			}
 		}
-
-		cooldown++;
-	}
-	public boolean isInMarker(Entity other){
-		if((other.getX() + (other.getWidth() / 2) <= mX + mW && other.getX() + (other.getWidth() / 2) >= mX && other.getY() + (other.getHeight() / 2) >= mY
-				&& other.getY() + (other.getHeight() / 2) <= mY + mH)){
-			return true;
-		}
-		return false;
 	}
 
 }

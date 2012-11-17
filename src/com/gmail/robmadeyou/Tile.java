@@ -2,6 +2,7 @@ package com.gmail.robmadeyou;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor4f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
@@ -28,6 +29,8 @@ public class Tile {
     private Texture texture = null;
     private float x;
     private float y;
+    public boolean isOP = false;
+    public float op = 0.5f;
     public int rotation = 0;
 
     public Tile(TileType type, float x, float y) {
@@ -63,6 +66,10 @@ public class Tile {
         glRotatef(rotation, 0f, 0f, 1f);
         glTranslatef(-x - 16, -y - 16, 0);
         glTranslatef(x , y, 0);
+        glColor4f(1f, 1f, 1f, 1f);
+        if(isOP){
+        	glColor4f(1f, 1f, 1f, op);
+        }
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
         glVertex2f(0, 0);
@@ -73,6 +80,7 @@ public class Tile {
         glTexCoord2f(0, 1);
         glVertex2f(0,  World.BLOCK_SIZE);
         glEnd();
+        glColor4f(1f, 1f, 1f, 1f);
         glPopMatrix();
         glLoadIdentity();
         
