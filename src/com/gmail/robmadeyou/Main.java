@@ -72,7 +72,7 @@ public class Main {
 			int delta = getDelta();
 			enemyies++;
 			
-			if(enemyies >= 1){
+			if(enemyies >= 10){
 				EnemyList.addEnemy(new EnemyList.Enemies(0, 200, 50, 50, 1));
 				EnemyList.addEnemy(new EnemyList.Enemies(0, 400, 50, 50, 1));
 				enemyies = 0;

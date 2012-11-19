@@ -5,6 +5,9 @@ import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
+import static org.lwjgl.opengl.GL11.glColor3f;
+
+import java.util.Random;
 
 import org.newdawn.slick.opengl.Texture;
 
@@ -130,6 +133,7 @@ public abstract class Enemy implements Entity {
 			//Change the texture loaders. Silly stuff
 		}
 		glBegin(GL_QUADS);
+			glColor3f(1, 1, 1);
 			glTexCoord2f(0, 0);
 			glVertex2f(x , y);
 			glTexCoord2f(1, 0);
@@ -139,6 +143,7 @@ public abstract class Enemy implements Entity {
 			glTexCoord2f(0, 1);
 			glVertex2f(x , y + height);
 		glEnd();
+		glColor3f(1, 1, 1);
 	}
 
 }

@@ -2,8 +2,10 @@ package com.gmail.robmadeyou;
 
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glColor4f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2i;
@@ -52,6 +54,7 @@ public class StateLevelEditor {
 			checkLeftMenu();
 			drawMenuSelectionBox();
 			drawLeftMenuSelectionBox();
+			drawBorderLines();
 			System.out.println(selectedTexPack);
 		}
 		firstClick = true;
@@ -83,16 +86,78 @@ public class StateLevelEditor {
     
     private static void checkTopMenu(){
     	if(selectedTexPack == 0){
-    		menuGrids.setAt(4, TileType.SELECTED_TILE, "x");
-    		menuGrids.setAt(5, TileType.DIRT, "x");
-    		menuGrids.setAt(6, TileType.GRASS, "x");
-    		menuGrids.setAt(7, TileType.STONE, "x");
     		menuGrids.setAt(0, TileType.P1_DIRT, "x");
     		menuGrids.setAt(1, TileType.P1_STONE, "x");
     		menuGrids.setAt(2, TileType.P1_GRASS, "x");
     		menuGrids.setAt(3, TileType.P1_GRASS2, "x");
+    		menuGrids.setAt(4, TileType.SELECTED_TILE, "x");
+    		menuGrids.setAt(5, TileType.DIRT, "x");
+    		menuGrids.setAt(6, TileType.GRASS, "x");
+    		menuGrids.setAt(7, TileType.STONE, "x");
+    		menuGrids.setAt(8, TileType.STONE, "x");
+    		menuGrids.setAt(9, TileType.STONE, "x");
+    		menuGrids.setAt(10, TileType.STONE, "x");
+    		menuGrids.setAt(11, TileType.STONE, "x");
+    		menuGrids.setAt(12, TileType.STONE, "x");
+    		menuGrids.setAt(13, TileType.STONE, "x");
+    		menuGrids.setAt(14, TileType.STONE, "x");
+    		menuGrids.setAt(15, TileType.STONE, "x");
+    		menuGrids.setAt(16, TileType.STONE, "x");
+    		menuGrids.setAt(17, TileType.STONE, "x");
+    		menuGrids.setAt(18, TileType.STONE, "x");
+    		menuGrids.setAt(19, TileType.STONE, "x");
+    		menuGrids.setAt(20, TileType.STONE, "x");
+    		menuGrids.setAt(21, TileType.STONE, "x");
+    		menuGrids.setAt(22, TileType.STONE, "x");
+    		menuGrids.setAt(23, TileType.STONE, "x");
+    		menuGrids.setAt(24, TileType.STONE, "x");
+    		menuGrids.setAt(25, TileType.STONE, "x");
+    		menuGrids.setAt(26, TileType.STONE, "x");
+    		menuGrids.setAt(27, TileType.STONE, "x");
+    		menuGrids.setAt(28, TileType.STONE, "x");
+    		menuGrids.setAt(29, TileType.STONE, "x");
+    		menuGrids.setAt(30, TileType.STONE, "x");
+    		menuGrids.setAt(31, TileType.STONE, "x");
+    		
     	}else if(selectedTexPack == 1){
     		menuGrids.setAt(7, TileType.AIR, "x");
+    	}
+    	
+    	
+    	
+    	else if(selectedTexPack == 10){
+    		menuGrids.setAt(0, TileType.PATHFINDING_EMPTY, "x");
+    		menuGrids.setAt(1, TileType.PATHFINDING_START, "x");
+    		menuGrids.setAt(2, TileType.PATHFINDING_END, "x");
+    		menuGrids.setAt(3, TileType.PATHFINDING_PATH, "x");
+    		menuGrids.setAt(4, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(5, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(6, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(7, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(8, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(9, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(10, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(11, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(12, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(13, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(14, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(15, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(16, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(17, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(18, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(19, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(20, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(21, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(22, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(23, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(24, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(25, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(26, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(27, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(28, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(29, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(30, TileType.QUICK_TILE_EMPTY, "x");
+    		menuGrids.setAt(31, TileType.QUICK_TILE_EMPTY, "x");
     	}
     	if(Input.lmbp && isInTopMenu && menuGrids.getType(MenuSelector_x).getType() != TileType.QUICK_TILE_EMPTY){
     		selection = menuGrids.getType(MenuSelector_x).getType();
@@ -105,13 +170,36 @@ public class StateLevelEditor {
     }
     private static void checkLeftMenu(){
     	menuGrids.setAt(1, TileType.DIRT, "y");
-    	if(Input.lmbp && isInLeftMenu && MenuSelector_y - 1 < 7){
+    	menuGrids.setAt(2, TileType.DIRT, "y");
+    	menuGrids.setAt(3, TileType.DIRT, "y");
+    	menuGrids.setAt(4, TileType.DIRT, "y");
+    	menuGrids.setAt(5, TileType.DIRT, "y");
+    	menuGrids.setAt(6, TileType.DIRT, "y");
+    	menuGrids.setAt(7, TileType.DIRT, "y");
+    	menuGrids.setAt(8, TileType.DIRT, "y");
+    	menuGrids.setAt(1, TileType.DIRT, "y");
+    	if(Input.lmbp && isInLeftMenu && MenuSelector_y - 1 < 11){
     		selectedTexPack = MenuSelector_y - 1;
     		
     	}
     	if(Input.lmbp && isInLeftMenu &&  MenuSelector_y - 1 >= 7){
     		
     	}
+    }
+    private static void drawBorderLines(){
+    	glBegin(GL_QUADS);
+    		glVertex2i(0 , 31);
+    		glVertex2i(1024, 31);
+    		glVertex2i(1024,34);
+    		glVertex2i(0,34);
+    	glEnd();
+    	
+    	glBegin(GL_QUADS);
+			glVertex2i(31 , 32);
+			glVertex2i(31, 512);
+			glVertex2i(34, 512);
+			glVertex2i(34, 32);
+		glEnd();
     }
     private static void drawLeftMenuSelectionBox(){
     	new Tile(TileType.SELECTED_TILE_LEFT, -32, (selectedTexPack) * World.BLOCK_SIZE).draw();
@@ -142,10 +230,14 @@ public class StateLevelEditor {
         	}
         	if(Input.lmbd){
         		if(!isEditingPaths){
-        			grid.setAt(selector_x, selector_y, selection, 0);
+        			if(!selection.editorMovement){
+        				grid.setAt(selector_x, selector_y, selection, 0);
+        			}
         		}
         		if(isEditingPaths){
-        			grid.setAt(selector_x, selector_y, selection, 1);
+        			if(selection.editorMovement){
+        				grid.setAt(selector_x, selector_y, selection, 1);
+        			}
         		}
         	}
         	if(Input.rmbd){
@@ -180,6 +272,15 @@ public class StateLevelEditor {
         			isEditingPaths = false;
         		}else{
         			isEditingPaths = true;
+        		}
+        	}
+        	if(Input.keyPressed == Keyboard.KEY_F){
+        		if(isEditingPaths == false){
+        			for(int x = 0; x < World.BLOCKS_WIDTH; x++){
+        				for(int y = 0; y < World.BLOCKS_HEIGHT; y++){
+        					grid.setAt(x, y, selection, 0);
+        				}
+        			}
         		}
         	}
         }

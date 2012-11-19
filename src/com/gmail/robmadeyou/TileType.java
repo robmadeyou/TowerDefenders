@@ -12,7 +12,7 @@ public enum TileType {
     
     
     //Editor Movement tiles
-    PATHFINDING_START("res/gui/editor/paths/start.png", true), PATHFINDING_EMPTY("res/gui/editor/paths/empty.png", true)
+    PATHFINDING_START("res/gui/editor/paths/start.png", true), PATHFINDING_EMPTY("res/gui/editor/paths/empty.png", true), PATHFINDING_END("res/gui/editor/paths/end.png", true), PATHFINDING_PATH("res/gui/editor/paths/path.png", true)
     
     
     

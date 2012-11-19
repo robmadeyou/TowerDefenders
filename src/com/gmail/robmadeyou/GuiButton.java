@@ -6,6 +6,8 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
+import java.util.Random;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
@@ -16,6 +18,7 @@ public abstract class GuiButton implements Gui {
 	protected int oX, oY, oH, oW;
 	protected String state, name;
 	protected Texture tex;
+	protected int cooldown = 0;
 	
 	public GuiButton(int x, int y, int w, int h, int number, String state, String name, Texture tex){
 		this.x = x;
@@ -82,7 +85,26 @@ public abstract class GuiButton implements Gui {
 		h = oH;
 		w = oW;
 	}
-	
+	public void shakeButton(){
+		cooldown++;
+		if(cooldown >= 5){
+		Random ran = new Random();
+		int ranX = ran.nextInt(5);
+		int ranY = ran.nextInt(5);
+		if(x != oX){
+			x = oX;
+		}else if(y != oY){
+			y = oY;
+		}else if(x == oX){
+			x += ranX;
+		}else if(y == oY){
+			y += ranY;
+		}
+		cooldown = 0;
+		}
+		
+		
+	}
 	public void draw(){
 		
 		if(tex != null){

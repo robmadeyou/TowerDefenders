@@ -23,7 +23,7 @@ public abstract class Towers implements Entity {
 	protected int number;
 	protected int enemyToAttack;
 	protected int cooldownCurrent = 0;
-	protected int cooldown = 50;
+	protected int cooldown = 5;
 	protected int bulletUpgrade = 1;
 	protected int upgrade = 0;
 	protected int radius = 60;
@@ -31,6 +31,7 @@ public abstract class Towers implements Entity {
 	protected String name;
 	protected float r , g, b;
 	protected boolean selected;
+	protected boolean moving = false;
 	protected Texture texture;
 	
 	public Towers(int x, int y, int width, int height,int radius, String name) {
@@ -146,8 +147,13 @@ public abstract class Towers implements Entity {
 	@Override
 	public boolean isSelected() {
 		if(isMouseOver() && Mouse.isButtonDown(0)){
+			this.moving = true;
+			return true;
+		}else if(Input.lmbd && moving){
+			this.moving = true;
 			return true;
 		}
+		this.moving = false;
 		return false;
 	}
 	public boolean isMouseOver() {
