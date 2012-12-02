@@ -30,7 +30,6 @@ public class State {
 	public static void onUpdate(int delta){
 		if(!state.equals("GAME") && !state.equals("LEVEL_EDIT")){
 			backg.draw();
-			System.out.println("bah");
 		}
 		GuiButtonList.drawAll(state);
 		GuiButtonList.onUpdate(state);
