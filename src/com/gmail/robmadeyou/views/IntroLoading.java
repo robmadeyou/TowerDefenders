@@ -8,7 +8,7 @@ import com.abereth.game.View;
  */
 public class IntroLoading extends View
 {
-	public IntroLoading(Game game)
+	public IntroLoading( Game game )
 	{
 		super(game);
 	}
