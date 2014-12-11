@@ -1,13 +1,16 @@
 package com.gmail.robmadeyou.views;
 
-import com.abereth.G;
+import com.abereth.event.TimedEvent;
 import com.abereth.game.Game;
 import com.abereth.game.View;
+import com.abereth.input.Keyboard;
 import com.abereth.input.Mouse;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.World;
 import org.dyn4j.geometry.*;
+
+import java.util.function.Consumer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -38,6 +41,14 @@ public class IntroLoading extends View
 		floor.setMass( Mass.Type.INFINITE );
 		// move the floor down a bit
 		floor.translate(2, -10);
+		floor.getFixtures().forEach( new Consumer<BodyFixture>()
+		{
+			@Override
+			public void accept( BodyFixture bodyFixture )
+			{
+				bodyFixture.setRestitution( 1 );
+			}
+		} );
 		this.world.addBody(floor);
 
 
@@ -64,33 +75,90 @@ public class IntroLoading extends View
 		rectangle.addFixture( Geometry.createSquare( 2 ) );
 		rectangle.setMass();
 		Transform t = new Transform();
-		t.setRotation( 2 );
+		t.setRotation( Math.random() * 360 );
 		rectangle.setTransform( t );
 		// move the floor down a bit
 		this.world.addBody(rectangle);
+
+		this.getGame().GetEventManager().add( new TimedEvent<Game>()
+		{
+			@Override
+			public void init( Game game )
+			{
+				super.init( game );
+
+				SetInterval( 1000 );
+			}
+
+			@Override
+			public void EachInterval( int delta, Game o )
+			{
+				Body rectangle = new Body();
+				rectangle.addFixture( Geometry.createSquare( 2 ) );
+				rectangle.setMass();
+				Transform t = new Transform();
+				t.setRotation( Math.random() * 360 );
+				rectangle.setTransform( t );
+				rectangle.translate( Math.random() * 20, 0 );
+				// move the floor down a bit
+				world.addBody(rectangle);
+			}
+
+			@Override
+			public boolean isDone( Game o )
+			{
+				return false;
+			}
+		}, false );
 	}
 
 	@Override
 	public void update(int delta)
 	{
 
-		if( Mouse.isLeftMouseDown() )
+		if( Keyboard.isKeyPressed( Keyboard.Key.Space  ) )
+		{
+			this.world.setGravity( new Vector2( 2, 4 ) );
+		}
+
+		if( Mouse.isLeftMouseClicked() )
 		{
 			Body rightTri = new Body();
 			rightTri.addFixture(Geometry.createRightTriangle( 2.0, 1.0 ));
 			rightTri.setMassType( Mass.Type.INFINITE );
 			rightTri.setMass();
 			rightTri.translate( Mouse.getX() / 45, -Mouse.getY() / 45 );
-			this.world.addBody(rightTri);
+			rightTri.getFixtures().forEach( new Consumer<BodyFixture>()
+			{
+				@Override
+				public void accept( BodyFixture bodyFixture )
+				{
+					bodyFixture.setFriction( 41 );
+					bodyFixture.setDensity( 999999999 );
+					bodyFixture.setRestitution( 0.5 );
+				}
+			} );
+			this.world.addBody( rightTri );
 		}
 		else if( Mouse.isRightMouseDown() )
 		{
 			Body rectangle = new Body();
-			rectangle.addFixture( Geometry.createSquare( 2 ) );
+			rectangle.addFixture( Geometry.createRightTriangle( 5, 1, true ) );
 			rectangle.setMass();
 			Transform t = new Transform();
-			t.setRotation( 2 );
+			t.setRotation( Math.random() * 90 );
+			rectangle.getFixtures().forEach( new Consumer<BodyFixture>()
+			{
+				@Override
+				public void accept( BodyFixture bodyFixture )
+				{
+					bodyFixture.setFriction( 41 );
+					bodyFixture.setDensity( 999999999 );
+					bodyFixture.setRestitution( 0.4 );
+				}
+			} );
 			rectangle.setTransform( t );
+			rectangle.setGravityScale( Math.random() * 10 );
 			rectangle.translate( Mouse.getX() / 45, -Mouse.getY() / 45 );
 			// move the floor down a bit
 			this.world.addBody(rectangle);
@@ -106,7 +174,7 @@ public class IntroLoading extends View
 			// get the object
 			Body go = this.world.getBody(i);
 			Polygon p = ( Polygon ) go.getFixture( 0 ).getShape();
-			glColor3d( Math.random(), Math.random(), Math.random() );
+			glColor3d( Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
 			glBegin( GL_POLYGON );
 				for( Vector2 v : p.getVertices() )
 				{
