@@ -170,7 +170,6 @@ public class IntroLoading extends View
 			glTranslated(this.world.getBody(i).getTransform().getTranslationX(), -this.world.getBody(i).getTransform().getTranslationY(), 0.0);
 			// rotate about the z-axis
 			glRotated( -Math.toDegrees( this.world.getBody( i ).getTransform().getRotation() ), 0.0, 0.0, 1.0 );
-			System.out.println( Math.toDegrees( this.world.getBody( i ).getTransform().getRotation() ) );
 			// get the object
 			Body go = this.world.getBody(i);
 			Polygon p = ( Polygon ) go.getFixture( 0 ).getShape();
